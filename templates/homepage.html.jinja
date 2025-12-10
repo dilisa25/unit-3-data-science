@@ -11,15 +11,17 @@
     <h1 class="text-3xl font-bold underline">
       Hello world!
     </h1>
-  {# {% for x in range(5) %}
-    <li>{{x}}</li>
-  {% endfor %}
-
-  {% if 0 == 1 %}
-    <p>Hello</p>
-  {%else%}
-   <p>goodbye</p>
-  {% endif %} #}
+    
+    {% for x in products %}
+     <div>
+      <img class = "max-h-30" src = "{{x['Image']}}">
+      <br>
+      {{x["Name"]}} <br>
+      ${{x["Price"]}}
+      
+     </div>
+    {endfor}
+    
 
   </body>
 </html>

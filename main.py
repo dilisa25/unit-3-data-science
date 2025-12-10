@@ -36,5 +36,5 @@ def browse():
     
     connection.close
 
-    return render_template("browse.html.jinja")
+    return render_template("browse.html.jinja", products=result)
 
