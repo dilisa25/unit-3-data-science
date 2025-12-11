@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <title>{{ product["Name"] }} - Doughi Sweets</title>
+  </head>
+
+  <body class="bg-purple-50 text-neutral-900">
+
+    {% include "components/navbar.html.jinja" %}
+
+    <!-- PAGE CONTAINER -->
+    <div class="max-w-7xl mx-auto px-6 py-10">
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+        <!-- LEFT: Product Image -->
+        <div class="lg:col-span-4 flex justify-center">
+          <img 
+            src="{{ product['Image'] }}" 
+            alt="{{ product['Name'] }}"
+            class="rounded-xl shadow-lg max-w-sm w-full border-4 border-purple-200"
+          />
+        </div>
+
+        <!-- MIDDLE: Product Info -->
+        <div class="lg:col-span-5 space-y-4">
+
+          <!-- Name -->
+          <h1 class="text-3xl font-bold text-purple-900">
+            {{ product["Name"] }}
+          </h1>
+
+          <hr class="border-purple-200">
+
+          <!-- Price -->
+          <p class="text-3xl text-purple-700 font-extrabold">
+            ${{ product["Price"] }}
+          </p>
+
+          <!-- Description -->
+          <p class="text-neutral-700 text-lg leading-relaxed">
+            {{ product["Description"] }}
+          </p>
+
+        </div>
+
+        <!-- RIGHT: Add to Cart Box -->
+        <div class="lg:col-span-3">
+          <div class="bg-white p-6 rounded-xl shadow-md border border-purple-200 space-y-6">
+
+            <!-- Price repeated (Amazon-style) -->
+            <p class="text-3xl text-purple-700 font-bold">
+              ${{ product["Price"] }}
+            </p>
+
+            <!-- Add to Cart -->
+            <button 
+              class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl shadow transition">
+              Add to Cart
+            </button>
+
+            <!-- Buy Now -->
+            <button 
+              class="w-full py-3 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-xl shadow transition">
+              Buy Now
+            </button>
+
+            <!-- Cute shipping box -->
+            <div class="text-sm text-purple-700 text-center">
+              🍪 Ships fresh from <span class="font-semibold">Doughi Sweets</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
