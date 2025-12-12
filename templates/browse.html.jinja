@@ -1,53 +1,53 @@
 <!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  </head>
+</head>
 
-  <body class="bg-purple-50 text-neutral-900">
-
+<body class="bg-purple-50 text-neutral-900">
     {% include "components/navbar.html.jinja" %}
 
     <div class="max-w-7xl mx-auto px-6 py-12">
 
-      <!-- PAGE TITLE -->
-      <h1 class="text-4xl font-bold text-purple-900 text-center mb-8">
-        Our Sweet Treats
-      </h1>
+        <!-- PAGE TITLE -->
+        <h1 class="text-4xl font-bold text-purple-900 text-center mb-8">
+            Our Sweet Treats
+        </h1>
 
-      <!-- PRODUCT GRID -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <!-- PRODUCT GRID -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
 
-        {% for x in products %}
-        <a href="/product/{{x['ID']}}" class="bg-white rounded-2xl border border-purple-200 shadow-md p-6 flex flex-col items-center hover:shadow-lg transition h-full">
+            {% for x in products %}
 
-          <!-- Product Image -->
-          <div class="w-full flex justify-center">
-            <img 
-              src="{{ x['Image'] }}"
-              alt="{{ x['Name'] }}"
-              class="w-full max-w-xs max-h-72 object-contain rounded-xl border-4 border-purple-200 shadow"
-            />
-          </div>
+            <a href="/product/{{ x['ID'] }}"
+               class="bg-white rounded-2xl border border-purple-200 shadow-md p-6 flex flex-col items-center hover:shadow-lg transition h-full">
 
-          <!-- Name -->
-          <h2 class="text-2xl font-semibold text-purple-900 text-center mt-4">
-            {{ x["Name"] }}
-          </h2>
+                <!-- Product Image -->
+                <div class="w-full flex justify-center">
+                    <img 
+                        src="{{ x['Image'] }}" 
+                        alt="{{ x['Name'] }}" 
+                        class="w-full max-w-xs max-h-72 object-contain rounded-xl border-4 border-purple-200 shadow"
+                    />
+                </div>
 
-          <!-- Price -->
-          <p class="text-2xl font-bold text-purple-700 mt-2 mb-4">
-            ${{ x["Price"] }}
-          </p>
+                <!-- Name -->
+                <h2 class="text-2xl font-semibold text-purple-900 text-center mt-4">
+                    {{ x["Name"] }}
+                </h2>
 
-        </a>
-        {% endfor %}
+                <!-- Price -->
+                <p class="text-2xl font-bold text-purple-700 mt-2 mb-4">
+                    ${{ x["Price"] }}
+                </p>
 
-      </div>
+            </a>
 
+            {% endfor %}
+
+        </div>
     </div>
-
-  </body>
+</body>
 </html>

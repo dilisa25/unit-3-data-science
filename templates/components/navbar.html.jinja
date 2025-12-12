@@ -2,20 +2,21 @@
   <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
 
     <!-- Logo -->
-    <a class="text-3xl font-bold" href="/homepage">
+    <a class="text-3xl font-bold" href="/">
       Doughi Sweets
     </a>
 
     <!-- Desktop Navigation -->
     <ul class="hidden md:flex mx-auto font-semibold space-x-12">
-      <li><a class="hover:text-purple-200 transition" href="/homepage">Home</a></li>
-      <li><a class="hover:text-purple-200 transition" href="/browse">Browse</a></li>
+      <li><a class="hover:text-purple-200 transition" href="/">Home</a></li>
+      <li><a class="hover:text-purple-200 transition" href="/browse">Menu</a></li>
       <li><a class="hover:text-purple-200 transition" href="/contact">Contact</a></li>
     </ul>
 
-    <!-- Desktop Icons -->
+    <!-- Desktop Icons + Dropdown -->
     <div class="hidden xl:flex items-center space-x-5">
-      <!-- Cart -->
+
+      <!-- Cart Icon -->
       <a class="hover:text-purple-200 transition" href="/cart">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
           viewBox="0 0 24 24" stroke="currentColor">
@@ -24,18 +25,29 @@
         </svg>
       </a>
 
-      <!-- Account -->
-      <a class="hover:text-purple-200 transition" href="/signin">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-          viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      </a>
+      <!-- Account Dropdown -->
+      <div class="relative group">
+        <button class="hover:text-purple-200 transition flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </button>
+
+        <!-- DROPDOWN MENU -->
+        <ul class="absolute right-0 mt-2 w-32 bg-purple-800 border border-purple-700 rounded-md 
+                   opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                   transition-all duration-200 text-white">
+          <li><a href="/login" class="block px-4 py-2 hover:bg-purple-700">Sign In</a></li>
+          <li><a href="/register" class="block px-4 py-2 hover:bg-purple-700">Register</a></li>
+        </ul>
+      </div>
     </div>
 
     <!-- Mobile Icons -->
     <div class="flex xl:hidden items-center space-x-4">
+
       <!-- Cart -->
       <a href="/cart">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hover:text-purple-200 transition" fill="none"
@@ -56,13 +68,14 @@
     </div>
   </div>
 
-  <!-- Mobile Menu -->
+  <!-- Mobile Menu Dropdown -->
   <div id="mobile-menu" class="hidden bg-purple-800 text-white md:hidden">
     <ul class="flex flex-col px-6 py-4 space-y-4">
       <li><a class="hover:text-purple-200 transition" href="/homepage">Home</a></li>
       <li><a class="hover:text-purple-200 transition" href="/browse">Browse</a></li>
       <li><a class="hover:text-purple-200 transition" href="/contact">Contact</a></li>
-      <li><a class="hover:text-purple-200 transition" href="/signin">Sign In</a></li>
+      <li><a class="hover:text-purple-200 transition" href="/login">Sign In</a></li>
+      <li><a class="hover:text-purple-200 transition" href="/register">Register</a></li>
     </ul>
   </div>
 
