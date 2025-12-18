@@ -1,5 +1,6 @@
 <nav class="bg-purple-900 text-white w-screen shadow-md">
   <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+     
 
     <!-- Logo -->
     <a class="text-3xl font-bold" href="/">
@@ -39,8 +40,14 @@
         <ul class="absolute right-0 mt-2 w-32 bg-purple-800 border border-purple-700 rounded-md 
                    opacity-0 invisible group-hover:opacity-100 group-hover:visible 
                    transition-all duration-200 text-white">
+          {%if not current_user.is_authenticated%}
           <li><a href="/login" class="block px-4 py-2 hover:bg-purple-700">Sign In</a></li>
-          <li><a href="/register" class="block px-4 py-2 hover:bg-purple-700">Register</a></li>
+          {%else%}
+          <div>
+              Hi {{current_user.name}}
+          </div>
+
+          {%endif%}
         </ul>
       </div>
     </div>
