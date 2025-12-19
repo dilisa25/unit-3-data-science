@@ -90,6 +90,18 @@ def product(product_id):
 
     return render_template("product.html.jinja", product=result)
 
+@app.route("/product/<product_id>/add_to_cart", methods=["POST"])
+@login_required
+def add_to_cart(product_id):
+    connection = connect_db()
+
+    cursor = connection.cursor()
+       
+    cursor.execute("INSERT INTO `Cart`(`Quantity`,`ProductID`,`UserID`) ")
+
+    result = cursor.fetchone()
+    return redirect('/cart')
+
 @app.route("/login",methods =['POST','GET'])
 def login():
     if request.method == "POST":

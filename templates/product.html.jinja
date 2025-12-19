@@ -58,16 +58,14 @@
             </p>
 
             <!-- Add to Cart -->
-            <button 
-              class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl shadow transition">
-              Add to Cart
-            </button>
-
-            <!-- Buy Now -->
-            <button 
-              class="w-full py-3 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-xl shadow transition">
-              Buy Now
-            </button>
+            <form method = "post" action="/product/{{ product['ID'] }}/add_to_cart" >
+                <label> Qty:</label>
+                <input name="Qty" type="number" value="1" min="1" max="20">
+                <button 
+                class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl shadow transition">
+                Add to Cart
+                </button>
+            </form>
 
             <!-- Cute shipping box -->
             <div class="text-sm text-purple-700 text-center">
