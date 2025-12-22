@@ -90,21 +90,48 @@ def product(product_id):
 
     return render_template("product.html.jinja", product=result)
 
+
 @app.route("/product/<product_id>/add_to_cart", methods=["POST"])
 @login_required
 def add_to_cart(product_id):
+  quantity = request.form["Qty"]
+
+  connection = connect_db()
+  cursor = connection.cursor()
+
+
+  cursor.execute("""
+    INSERT INTO `Cart` (`Quantity`, `ProductID`, `UserID`)
+    VALUES(%s, %s, %s)
+    ON DUPLICATE KEY UPDATE
+    `Quantity` = `Quantity` + %s
+ """, (quantity, product_id, current_user.id, quantity))
+  
+  connection.close()
+
+  return redirect('/cart')
+
+@app.route("/cart")
+@login_required
+def cart():
     connection = connect_db()
-
     cursor = connection.cursor()
-       
-    cursor.execute("INSERT INTO `Cart`(`Quantity`,`ProductID`,`UserID`) ")
 
-    result = cursor.fetchone()
-    return redirect('/cart')
+    cursor.execute("""
+        SELECT * FROM `Cart`
+        JOIN `Product` ON `Product`.`ID` = `Cart`.`ProductID`
+        WHERE `UserID` = %s
+    """, (current_user.id))
+
+    results = cursor.fetchall()
+    connection.close()
+
+    return render_template("cart.html.jinja", cart=results)
+
 
 @app.route("/login",methods =['POST','GET'])
 def login():
-    if request.method == "POST":
+    if request.method == "POST": 
         email = request.form["email"]
         password = request.form["password"]
         

@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-purple-50 text-neutral-900">
+    {% include "components/navbar.html.jinja" %}
+
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <h1 class="text-4xl font-bold text-purple-900 text-center mb-10">
+            Shopping Cart
+        </h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+            <!-- CART ITEMS -->
+            <div class="lg:col-span-2 space-y-6">
+
+                {% for x in cart %}
+                <div class="bg-white rounded-2xl border border-purple-200 shadow p-6 flex flex-col sm:flex-row gap-6">
+
+                    <!-- Image -->
+                    <img
+                        src="{{ x['Image'] }}"
+                        alt="{{ x['Name'] }}"
+                        class="w-32 h-32 object-contain rounded-xl border border-purple-200"
+                    />
+
+                    <!-- Details -->
+                    <div class="flex-1">
+                        <h2 class="text-2xl font-semibold text-purple-900">
+                            {{ x["Name"] }}
+                        </h2>
+
+                        <p class="text-purple-700 font-bold mt-1">
+                            ${{ x["Price"] }} each
+                        </p>
+
+                        <!-- Quantity Controls -->
+                        <div class="flex items-center gap-4 mt-4">
+                            <a href="/cart/decrease/{{ x['ID'] }}"
+                               class="px-3 py-1 rounded-lg bg-purple-100 hover:bg-purple-200 font-bold">
+                                −
+                            </a>
+
+                            <span class="text-lg font-semibold">
+                                {{ x["Quantity"] }}
+                            </span>
+
+                            <a href="/cart/increase/{{ x['ID'] }}"
+                               class="px-3 py-1 rounded-lg bg-purple-100 hover:bg-purple-200 font-bold">
+                                +
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Price & Remove -->
+                    <div class="flex flex-col justify-between items-end">
+                        <p class="text-2xl font-bold text-purple-800">
+                            ${{ x["Price"] * x["Quantity"] }}
+                        </p>
+
+                        <a href="/cart/remove/{{ x['ID'] }}"
+                           class="text-red-600 hover:underline text-sm font-semibold">
+                            Remove
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <!-- ORDER SUMMARY -->
+            <div class="bg-white rounded-2xl border border-purple-200 shadow p-6 h-fit">
+                <h2 class="text-2xl font-bold text-purple-900 mb-6">
+                    Order Summary
+                </h2>
+
+                <div class="flex justify-between mb-3">
+                    <span>Subtotal</span>
+                    <span class="font-semibold">${{ subtotal }}</span>
+                </div>
+
+                <div class="flex justify-between mb-3">
+                    <span>Tax</span>
+                    <span class="font-semibold">${{ tax }}</span>
+                </div>
+
+                <div class="border-t pt-4 flex justify-between text-xl font-bold text-purple-900">
+                    <span>Total</span>
+                    <span>${{ total }}</span>
+                </div>
+
+                <a href="/checkout"
+                   class="block mt-6 text-center bg-purple-700 hover:bg-purple-800 text-white font-semibold py-3 rounded-xl transition">
+                    Proceed to Checkout
+                </a>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
