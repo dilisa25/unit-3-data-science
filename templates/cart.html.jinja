@@ -19,76 +19,74 @@
             <!-- CART ITEMS -->
             <div class="lg:col-span-2 space-y-6">
 
-                {% for x in cart %}
-                <div class="bg-white rounded-2xl border border-purple-200 shadow p-6 flex flex-col sm:flex-row gap-6">
+                {% if cart|length == 0 %}
+                There is nothing in your cart click <a class="font-bold" href="/browse">here </a> to browse
+                {% else %}
 
-                    <!-- Image -->
-                    <img
-                        src="{{ x['Image'] }}"
-                        alt="{{ x['Name'] }}"
-                        class="w-32 h-32 object-contain rounded-xl border border-purple-200"
-                    />
+                    {% for x in cart %}
+                    <div class="bg-white rounded-2xl border border-purple-200 shadow p-6 flex flex-col sm:flex-row gap-6">
 
-                    <!-- Details -->
-                    <div class="flex-1">
-                        <h2 class="text-2xl font-semibold text-purple-900">
-                            {{ x["Name"] }}
-                        </h2>
+                        <!-- Image -->
+                        <img
+                            src="{{ x['Image'] }}"
+                            alt="{{ x['Name'] }}"
+                            class="w-32 h-32 object-contain rounded-xl border border-purple-200"
+                        />
 
-                        <p class="text-purple-700 font-bold mt-1">
-                            ${{ x["Price"] }} each
-                        </p>
+                        <!-- Details -->
+                        <div class="flex-1">
+                            <h2 class="text-2xl font-semibold text-purple-900">
+                                {{ x["Name"] }}
+                            </h2>
 
-                        <!-- Quantity Controls -->
-                        <div class="flex items-center gap-4 mt-4">
-                            <a href="/cart/decrease/{{ x['ID'] }}"
-                               class="px-3 py-1 rounded-lg bg-purple-100 hover:bg-purple-200 font-bold">
-                                −
-                            </a>
+                            <p class="text-purple-700 font-bold mt-1">
+                                ${{ x["Price"] }} each
+                            </p>
 
-                            <span class="text-lg font-semibold">
-                                {{ x["Quantity"] }}
-                            </span>
+                            <!-- Quantity Controls -->
+                            <div class="flex items-center gap-4 mt-4">
+                                <a href="/cart/decrease/{{ x['ProductID'] }}"
+                                class="px-3 py-1 rounded-lg bg-purple-100 hover:bg-purple-200 font-bold">
+                                  -
+                                </a>
 
-                            <a href="/cart/increase/{{ x['ID'] }}"
-                               class="px-3 py-1 rounded-lg bg-purple-100 hover:bg-purple-200 font-bold">
-                                +
-                            </a>
+                                <span class="text-lg font-semibold">
+                                    <form method="post" action="/cart/{{ x['ProductID']}}/update_qty">
+                                        <input name="Qty" type="number" value='{{ x["Quantity"] }}' min="1"max="20">
+                                    <button type ="submit">Update</button>
+                                    </form>
+                                </span>
+
+                                <a href="/cart/increase/{{ x['ProductID'] }}"
+                                class="px-3 py-1 rounded-lg bg-purple-100 hover:bg-purple-200 font-bold">
+                                    +
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Price & Remove -->
+                        <div class="flex flex-col justify-between items-end">
+                            <p class="text-2xl font-bold text-purple-800">
+                                ${{ x["Price"] * x["Quantity"] }}
+                            </p>
+
+
+                            <form method="post" action="/cart/{{ x['ProductID'] }}/delete_item">
+                            <button class="text-red-600 hover:underline text-sm font-semibold"type="submit">Remove</button>
+                            </form>
                         </div>
                     </div>
-
-                    <!-- Price & Remove -->
-                    <div class="flex flex-col justify-between items-end">
-                        <p class="text-2xl font-bold text-purple-800">
-                            ${{ x["Price"] * x["Quantity"] }}
-                        </p>
-
-                        <a href="/cart/remove/{{ x['ID'] }}"
-                           class="text-red-600 hover:underline text-sm font-semibold">
-                            Remove
-                        </a>
-                    </div>
-                </div>
-                {% endfor %}
+                  {% endfor %}
+                {% endif %}
 
             </div>
-
             <!-- ORDER SUMMARY -->
             <div class="bg-white rounded-2xl border border-purple-200 shadow p-6 h-fit">
                 <h2 class="text-2xl font-bold text-purple-900 mb-6">
                     Order Summary
                 </h2>
 
-                <div class="flex justify-between mb-3">
-                    <span>Subtotal</span>
-                    <span class="font-semibold">${{ subtotal }}</span>
-                </div>
-
-                <div class="flex justify-between mb-3">
-                    <span>Tax</span>
-                    <span class="font-semibold">${{ tax }}</span>
-                </div>
-
+                
                 <div class="border-t pt-4 flex justify-between text-xl font-bold text-purple-900">
                     <span>Total</span>
                     <span>${{ total }}</span>

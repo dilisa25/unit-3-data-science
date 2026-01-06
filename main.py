@@ -114,6 +114,8 @@ def add_to_cart(product_id):
 @app.route("/cart")
 @login_required
 def cart():
+     
+
     connection = connect_db()
     cursor = connection.cursor()
 
@@ -126,8 +128,50 @@ def cart():
     results = cursor.fetchall()
     connection.close()
 
-    return render_template("cart.html.jinja", cart=results)
+    total=0
+    for item in results:
+      total = total + item["Price"] * item["Quantity"] 
 
+    return render_template("cart.html.jinja", cart=results, total=total)
+
+
+
+@app.route("/cart/<product_id>/update_qty", methods=["POST"])
+@login_required
+def update_cart(product_id):
+   
+   new_qty = request.form["Qty"]
+
+   connection = connect_db()
+   cursor = connection.cursor()
+
+   cursor.execute("""
+      UPDATE `Cart`
+      SET `Quantity` = %s
+      WHERE `ProductID` = %s AND `UserID` = %s 
+    """, (new_qty, product_id, current_user.id))
+   
+
+   connection.close()
+
+   return redirect("/cart")
+
+
+@app.route('/cart/<product_id>/delete_item', methods=["POST"])
+@login_required
+def delete_cart_item(product_id):
+
+   connection = connect_db()
+   cursor = connection.cursor()
+
+   cursor.execute("""
+       DELETE FROM Cart
+       WHERE ProductID = %s AND UserID = %s
+   """, (product_id, current_user.id))
+
+   connection.close()
+   flash("Item removed")
+   return redirect('/cart')
 
 @app.route("/login",methods =['POST','GET'])
 def login():
