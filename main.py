@@ -109,7 +109,7 @@ def add_to_cart(product_id):
   
   connection.close()
 
-  return redirect('/cart')
+  return redirect("/cart")
 
 @app.route("/cart")
 @login_required
@@ -134,6 +134,64 @@ def cart():
 
     return render_template("cart.html.jinja", cart=results, total=total)
 
+from flask import redirect, url_for
+
+@app.route("/checkout", methods=["GET", "POST"])
+@login_required
+def checkout():
+
+    connection = connect_db()
+    cursor = connection.cursor()
+
+    cursor.execute(""" 
+        SELECT * FROM `Cart`
+        JOIN `Product` ON `Product`.`ID` = `Cart`.`ProductID`
+        WHERE `UserID` = %s """ , (current_user.id,))
+    
+    results = cursor.fetchall()
+
+    if request.method == "POST":
+        # Create sale
+        cursor.execute(
+            "INSERT INTO `Sale` (`UserID`) VALUES (%s)",
+            (current_user.id,)
+        )
+        sale_id = cursor.lastrowid
+
+        # Store purchased products
+        for item in results:
+            cursor.execute("""
+                INSERT INTO `SaleCart`
+                (`SaleID`, `ProductID`, `Quantity`)
+                VALUES (%s, %s, %s)
+            """, (sale_id, item["ProductID"], item["Quantity"]))
+
+        # Empty cart
+        cursor.execute(
+            "DELETE FROM `Cart` WHERE `UserID` = %s",
+            (current_user.id,)
+        )
+
+        connection.commit()
+        connection.close()
+
+        # Redirect to thank-you page
+        return redirect("/thank-you")
+
+    connection.close()
+
+    # Calculate total for GET
+    total = sum(item["Price"] * item["Quantity"] for item in results)
+
+    return render_template(
+        "checkout.html.jinja",
+        cart=results,
+        total=total
+    )
+
+@app.route("/thankyou")
+def thank():
+    return render_template()
 
 
 @app.route("/cart/<product_id>/update_qty", methods=["POST"])
@@ -199,8 +257,6 @@ def login():
     
 
     return render_template("login.html.jinja")
-
-
 
 
 
