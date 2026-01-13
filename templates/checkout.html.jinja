@@ -1,54 +1,150 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Checkout</title>
 </head>
 
 <body class="bg-purple-50 text-neutral-900">
     {% include "components/navbar.html.jinja" %}
 
-    <div class="max-w-3xl mx-auto px-6 py-20 text-center">
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <h1 class="text-4xl font-bold text-purple-900 text-center mb-10">
+            Checkout
+        </h1>
 
-        <div class="bg-white rounded-3xl border border-purple-200 shadow-lg p-10">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
 
-            <!-- Icon -->
-            <div class="flex justify-center mb-6">
-                <div class="w-20 h-20 rounded-full bg-purple-100 flex items-center justify-center">
-                    <span class="text-4xl">🎉</span>
+            <!-- CART ITEMS -->
+            <section class="lg:col-span-3 space-y-6">
+                {% if cart|length == 0 %}
+                    <div class="bg-white rounded-2xl border border-purple-200 shadow p-10 text-center">
+                        <p class="text-lg mb-6">Your cart is empty 🛒</p>
+                        <a href="/browse"
+                           class="inline-block bg-purple-700 hover:bg-purple-800 text-white font-semibold px-6 py-3 rounded-xl transition">
+                            Browse Products
+                        </a>
+                    </div>
+                {% else %}
+
+                {% for x in cart %}
+                <div class="bg-white rounded-2xl border border-purple-200 shadow p-6 flex flex-col sm:flex-row gap-6">
+
+                    <!-- Image -->
+                    <a href="/product/{{ x['ID'] }}">
+                        <img
+                            src="{{ x['Image'] }}"
+                            alt="{{ x['Name'] }}"
+                            class="w-32 h-32 object-contain rounded-xl border border-purple-200"
+                        />
+                    </a>
+
+                    <!-- Details -->
+                    <div class="flex-1">
+                        <a href="/product/{{ x['ID'] }}">
+                            <h2 class="text-2xl font-semibold text-purple-900 hover:underline">
+                                {{ x["Name"] }}
+                            </h2>
+                        </a>
+
+                        <p class="text-purple-700 font-bold mt-1">
+                            ${{ x["Price"] }} each
+                        </p>
+
+                        <!-- Quantity -->
+                        <form method="post" action="/cart/{{ x['ProductID'] }}/update_qty"
+                              class="flex items-center gap-3 mt-4">
+                            <label class="font-medium">Qty</label>
+                            <input
+                                type="number"
+                                name="qty"
+                                min="1"
+                                value="{{ x['Quantity'] }}"
+                                class="w-20 border border-purple-300 rounded-lg px-3 py-1"
+                            />
+                            <button
+                                type="submit"
+                                class="bg-purple-100 hover:bg-purple-200 px-3 py-1 rounded-lg font-semibold">
+                                Update
+                            </button>
+                        </form>
+
+                        <!-- Remove -->
+                        <form method="post" action="/cart/{{ x['ProductID'] }}/delete" class="mt-3">
+                            <button
+                                type="submit"
+                                class="text-red-600 hover:underline text-sm font-semibold">
+                                Remove
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Item Total -->
+                    <div class="flex items-center sm:items-start justify-end">
+                        <p class="text-2xl font-bold text-purple-800 whitespace-nowrap">
+                            ${{ x["Price"] * x["Quantity"] }}
+                        </p>
+                    </div>
                 </div>
-            </div>
+                {% endfor %}
+                {% endif %}
+            </section>
 
-            <!-- Heading -->
-            <h1 class="text-4xl font-bold text-purple-900 mb-4">
-                Thank You for Your Purchase!
-            </h1>
+            <!-- CHECKOUT FORM -->
+            <aside class="lg:col-span-2 bg-white rounded-2xl border border-purple-200 shadow p-8 h-fit">
+                <h2 class="text-2xl font-bold text-purple-900 mb-6">
+                    Shipping Details
+                </h2>
 
-            <!-- Message -->
-            <p class="text-lg text-purple-700 mb-8">
-                Your order has been placed successfully.  
-                We hope you enjoy your purchase!
-            </p>
+                <form method="post" class="space-y-4">
 
-            <!-- Actions -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/browse"
-                   class="bg-purple-700 hover:bg-purple-800 text-white
-                          font-bold px-8 py-3 rounded-xl transition">
-                    Continue Shopping
-                </a>
+                    <div>
+                        <label class="block mb-1 font-medium">Full Name</label>
+                        <input type="text" name="name" required
+                            class="w-full border border-purple-300 rounded-lg px-3 py-2">
+                    </div>
 
-                <a href="/"
-                   class="bg-purple-100 hover:bg-purple-200 text-purple-800
-                          font-bold px-8 py-3 rounded-xl transition">
-                    Go Home
-                </a>
-            </div>
+                    <div>
+                        <label class="block mb-1 font-medium">Email</label>
+                        <input type="email" name="email" required
+                            class="w-full border border-purple-300 rounded-lg px-3 py-2">
+                    </div>
+
+                    <div>
+                        <label class="block mb-1 font-medium">Address</label>
+                        <input type="text" name="address" required
+                            class="w-full border border-purple-300 rounded-lg px-3 py-2">
+                    </div>
+
+                    <div>
+                        <label class="block mb-1 font-medium">City</label>
+                        <input type="text" name="city" required
+                            class="w-full border border-purple-300 rounded-lg px-3 py-2">
+                    </div>
+
+                    <div>
+                        <label class="block mb-1 font-medium">ZIP / Postal Code</label>
+                        <input type="text" name="zip" required
+                            class="w-full border border-purple-300 rounded-lg px-3 py-2">
+                    </div>
+
+                    <!-- TOTAL -->
+                    <div class="border-t pt-4 mt-6 flex justify-between text-xl font-bold text-purple-900">
+                        <span>Total ({{ cart|length }} items)</span>
+                        <span>${{ total }}</span>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="w-full mt-6 bg-purple-700 hover:bg-purple-800 text-white font-semibold py-3 rounded-xl transition">
+                        Place Order
+                    </button>
+                </form>
+            </aside>
 
         </div>
-
-    </div>
-
+    </main>
 </body>
 </html>

@@ -1,6 +1,5 @@
 <nav class="bg-purple-900 text-white w-screen shadow-md">
   <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-     
 
     <!-- Logo -->
     <a class="text-3xl font-bold" href="/">
@@ -36,18 +35,26 @@
           </svg>
         </button>
 
-        <!-- DROPDOWN MENU -->
-        <ul class="absolute right-0 mt-2 w-32 bg-purple-800 border border-purple-700 rounded-md 
+        <!-- Dropdown Menu -->
+        <ul class="absolute right-0 mt-2 w-40 bg-purple-800 border border-purple-700 rounded-md 
                    opacity-0 invisible group-hover:opacity-100 group-hover:visible 
                    transition-all duration-200 text-white">
-          {%if not current_user.is_authenticated%}
-          <li><a href="/login" class="block px-4 py-2 hover:bg-purple-700">Sign In</a></li>
-          {%else%}
-          <div>
-              Hi {{current_user.name}}
-          </div>
 
-          {%endif%}
+          {% if not current_user.is_authenticated %}
+            <li><a href="/login" class="block px-4 py-2 hover:bg-purple-700">Sign In</a></li>
+            <li><a href="/register" class="block px-4 py-2 hover:bg-purple-700">Register</a></li>
+          {% else %}
+            <li class="px-4 py-2 text-sm text-purple-200">
+              Hi {{ current_user.name }}
+            </li>
+            <li><a href="/orders" class="block px-4 py-2 hover:bg-purple-700">My Orders</a></li>
+            <li>
+              <a href="/logout" class="block px-4 py-2 hover:bg-purple-700 text-red-300">
+                Logout
+              </a>
+            </li>
+          {% endif %}
+
         </ul>
       </div>
     </div>
@@ -75,17 +82,24 @@
     </div>
   </div>
 
-  <!-- Mobile Menu Dropdown -->
+  <!-- Mobile Menu -->
   <div id="mobile-menu" class="hidden bg-purple-800 text-white md:hidden">
     <ul class="flex flex-col px-6 py-4 space-y-4">
-      <li><a class="hover:text-purple-200 transition" href="/homepage">Home</a></li>
+      <li><a class="hover:text-purple-200 transition" href="/">Home</a></li>
       <li><a class="hover:text-purple-200 transition" href="/browse">Browse</a></li>
       <li><a class="hover:text-purple-200 transition" href="/contact">Contact</a></li>
-      <li><a class="hover:text-purple-200 transition" href="/login">Sign In</a></li>
-      <li><a class="hover:text-purple-200 transition" href="/register">Register</a></li>
+
+      {% if current_user.is_authenticated %}
+        <li><a class="hover:text-purple-200 transition" href="/orders">My Orders</a></li>
+        <li><a class="hover:text-red-300 transition" href="/logout">Logout</a></li>
+      {% else %}
+        <li><a class="hover:text-purple-200 transition" href="/login">Sign In</a></li>
+        <li><a class="hover:text-purple-200 transition" href="/register">Register</a></li>
+      {% endif %}
     </ul>
   </div>
 
+  <!-- Mobile Menu Script -->
   <script>
     const menuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');

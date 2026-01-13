@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>My Orders</title>
+</head>
+
+<body class="bg-purple-50 min-h-screen text-neutral-900">
+
+    {% include "components/navbar.html.jinja" %}
+
+    <main class="max-w-6xl mx-auto px-6 py-8">
+
+        <h1 class="text-3xl font-bold text-purple-900 mb-6 text-center">
+            My Orders
+        </h1>
+
+        {% if orders %}
+        <div class="space-y-4">
+
+            {% for order in orders %}
+            <div class="bg-white rounded-xl border border-purple-200 shadow-sm p-4">
+
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-3">
+                    <div>
+                        <p class="text-sm text-purple-600">
+                            Order #{{ order["ID"] }}
+                        </p>
+                        <p class="text-xs text-purple-500">
+                            {{ order["Timestamp"].strftime('%b %d, %Y') }}
+                        </p>
+                    </div>
+
+                    <!-- Status -->
+                    <span class="mt-2 md:mt-0 px-3 py-0.5 rounded-full text-xs font-semibold
+                                 bg-purple-100 text-purple-700">
+                        Pending
+                    </span>
+                </div>
+
+                <!-- Order Info -->
+                <div class="grid grid-cols-3 gap-4 text-purple-900">
+
+                    <div>
+                        <p class="text-xs text-purple-500">Total</p>
+                        <p class="font-semibold">
+                            ${{ "%.2f"|format(order["Total"]) }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-xs text-purple-500">Items</p>
+                        <p class="font-semibold">
+                            {{ order["Quantity"] }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-xs text-purple-500">Payment</p>
+                        <p class="font-semibold">
+                            Card
+                        </p>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            {% endfor %}
+
+        </div>
+        {% else %}
+        <!-- Empty State -->
+        <div class="bg-white rounded-xl border border-purple-200 shadow-sm p-8 text-center">
+            <h2 class="text-lg font-semibold text-purple-900 mb-2">
+                No orders yet
+            </h2>
+            <p class="text-purple-600 mb-4 text-sm">
+                You haven’t placed any orders.
+            </p>
+            <a href="/browse"
+               class="inline-block px-5 py-2 bg-purple-700 hover:bg-purple-800 text-white text-sm font-semibold rounded-lg transition">
+                Start Shopping
+            </a>
+        </div>
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

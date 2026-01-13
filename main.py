@@ -191,7 +191,7 @@ def checkout():
 
 @app.route("/thankyou")
 def thank():
-    return render_template()
+    return render_template("thankyou.html.jinja")
 
 
 @app.route("/cart/<product_id>/update_qty", methods=["POST"])
@@ -304,3 +304,31 @@ def logout():
     logout_user()
     flash("You have been logged out! Thanks for shopping")
     return redirect("/login")
+
+@app.route("/orders")
+@login_required
+def order():
+     
+    connection = connect_db()
+    cursor = connection.cursor()
+
+    cursor.execute("""            
+        SELECT
+           `Sale`.`ID`,
+           `Sale`.`Timestamp`,
+            SUM(`SaleCart`.`Quantity` ) AS 'Quantity',
+            SUM(`SaleCart`.`Quantity` * `Product`.`Price`) AS 'Total'
+        FROM `Sale`
+        JOIN `SaleCart` ON `SaleCart`.`SaleID` = `Sale`.`ID`
+        JOIN `Product` ON `Product`.`ID` = `SaleCart`.`ProductID`          
+        WHERE `UserID` = %s
+        GROUP BY `Sale`.`ID`
+    """, (current_user.id))
+
+    results = cursor.fetchall()
+    connection.close()
+
+    return render_template("orders.html.jinja", orders = results)
+
+
+
