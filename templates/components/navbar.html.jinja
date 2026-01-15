@@ -10,7 +10,6 @@
     <ul class="hidden md:flex mx-auto font-semibold space-x-12">
       <li><a class="hover:text-purple-200 transition" href="/">Home</a></li>
       <li><a class="hover:text-purple-200 transition" href="/browse">Menu</a></li>
-      <li><a class="hover:text-purple-200 transition" href="/contact">Contact</a></li>
     </ul>
 
     <!-- Desktop Icons + Dropdown -->
@@ -26,38 +25,37 @@
       </a>
 
       <!-- Account Dropdown -->
-      <div class="relative group">
-        <button class="hover:text-purple-200 transition flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </button>
+<div class="relative group">
+  <button class="hover:text-purple-200 transition flex items-center space-x-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    {% if current_user.is_authenticated %}
+      <span class="font-medium">{{ current_user.name }}</span>
+    {% endif %}
+  </button>
 
-        <!-- Dropdown Menu -->
-        <ul class="absolute right-0 mt-2 w-40 bg-purple-800 border border-purple-700 rounded-md 
-                   opacity-0 invisible group-hover:opacity-100 group-hover:visible 
-                   transition-all duration-200 text-white">
+  <!-- Dropdown Menu -->
+  <ul class="absolute right-0 mt-2 w-40 bg-purple-800 border border-purple-700 rounded-md 
+             opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+             transition-all duration-200 text-white">
 
-          {% if not current_user.is_authenticated %}
-            <li><a href="/login" class="block px-4 py-2 hover:bg-purple-700">Sign In</a></li>
-            <li><a href="/register" class="block px-4 py-2 hover:bg-purple-700">Register</a></li>
-          {% else %}
-            <li class="px-4 py-2 text-sm text-purple-200">
-              Hi {{ current_user.name }}
-            </li>
-            <li><a href="/orders" class="block px-4 py-2 hover:bg-purple-700">My Orders</a></li>
-            <li>
-              <a href="/logout" class="block px-4 py-2 hover:bg-purple-700 text-red-300">
-                Logout
-              </a>
-            </li>
-          {% endif %}
+    {% if not current_user.is_authenticated %}
+      <li><a href="/login" class="block px-4 py-2 hover:bg-purple-700">Sign In</a></li>
+      <li><a href="/register" class="block px-4 py-2 hover:bg-purple-700">Register</a></li>
+    {% else %}
+      <li><a href="/orders" class="block px-4 py-2 hover:bg-purple-700">My Orders</a></li>
+      <li>
+        <a href="/logout" class="block px-4 py-2 hover:bg-purple-700 text-red-300">
+          Logout
+        </a>
+      </li>
+    {% endif %}
 
-        </ul>
-      </div>
-    </div>
+  </ul>
+</div>
 
     <!-- Mobile Icons -->
     <div class="flex xl:hidden items-center space-x-4">

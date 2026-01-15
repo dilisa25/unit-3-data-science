@@ -85,10 +85,20 @@ def product(product_id):
     cursor.execute("SELECT * FROM `Product` WHERE `ID` = %s", (product_id) )
 
     result = cursor.fetchone()
+
+    cursor.execute("""
+      SELECT * FROM `Review` 
+      JOIN `User` ON `User`.`ID` = `Review`.`UserID`
+      WHERE `ProductID` = %s
+      """, (product_id)) 
+    
+    reviews = cursor.fetchall()
     
     connection.close()
+    
+    average_rating = round(sum(review["Rating"] for review in reviews) / len(reviews), 1)
 
-    return render_template("product.html.jinja", product=result)
+    return render_template("product.html.jinja", product=result, reviews=reviews, average_rating=average_rating)
 
 
 @app.route("/product/<product_id>/add_to_cart", methods=["POST"])
@@ -111,6 +121,33 @@ def add_to_cart(product_id):
 
   return redirect("/cart")
 
+@app.route("/product/<product_id>/review", methods=["POST"])
+@login_required
+def add_review(product_id):
+    #get input vale from form 
+    rating = request.form["rating"]
+    comment = request.form["comment"]
+   
+   
+    connection = connect_db()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+      INSERT INTO `Review`
+             (`Rating`, `Comments`,`UserID`,`ProductID`)
+       VALUES
+            (%s,%s,%s,%s)
+      """,(rating,comment,current_user.id,product_id))
+    
+    
+
+    connection.close()
+
+
+    return redirect(f"/product/{product_id}")
+
+
+
 @app.route("/cart")
 @login_required
 def cart():
@@ -124,6 +161,7 @@ def cart():
         JOIN `Product` ON `Product`.`ID` = `Cart`.`ProductID`
         WHERE `UserID` = %s
     """, (current_user.id))
+                 
 
     results = cursor.fetchall()
     connection.close()
@@ -330,5 +368,8 @@ def order():
 
     return render_template("orders.html.jinja", orders = results)
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("404.html.jinja")
 
 
