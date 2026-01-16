@@ -60,7 +60,17 @@ def connect_db():
 
 @app.route("/")
 def index():
-    return render_template("homepage.html.jinja")
+    connection = connect_db()
+
+    cursor = connection.cursor() 
+
+    cursor.execute("SELECT * FROM `Product` " )
+
+    result = cursor.fetchall()
+    
+    connection.close()
+
+    return render_template("homepage.html.jinja", products=result)
 
 @app.route("/browse")
 def browse():
@@ -96,8 +106,11 @@ def product(product_id):
     
     connection.close()
     
-    average_rating = round(sum(review["Rating"] for review in reviews) / len(reviews), 1)
-
+    if reviews:
+        average_rating = round(sum(review["Rating"] for review in reviews) / len(reviews), 1)
+    else:
+        average_rating = 0 
+    
     return render_template("product.html.jinja", product=result, reviews=reviews, average_rating=average_rating)
 
 
@@ -227,7 +240,7 @@ def checkout():
         total=total
     )
 
-@app.route("/thankyou")
+@app.route("/thank-you")
 def thank():
     return render_template("thankyou.html.jinja")
 

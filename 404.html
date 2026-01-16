@@ -1,47 +1,48 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <title>Product Not Found — Doughi Sweets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="bg-purple-50 text-neutral-900">
-    {% include "components/navbar.html.jinja" %}
+<body class="bg-purple-50 min-h-screen flex items-center justify-center text-neutral-900 px-6">
 
-    <div class="min-h-[70vh] flex items-center justify-center px-6">
-        <div class="bg-white rounded-3xl border border-purple-200 shadow-lg p-12 text-center max-w-lg">
+    <div class="bg-white max-w-md w-full rounded-2xl shadow-xl border border-purple-200 p-10 text-center">
 
-            <!-- Big 404 -->
-            <h1 class="text-7xl font-extrabold text-purple-800 mb-4">
-                404
-            </h1>
+        <!-- 404 -->
+        <h1 class="text-7xl font-extrabold text-purple-800 tracking-wide">
+            404
+        </h1>
 
-            <!-- Message -->
-            <h2 class="text-2xl font-bold text-purple-900 mb-4">
-                Page Not Found
-            </h2>
+        <h2 class="mt-2 text-2xl font-semibold text-purple-900">
+            Product Not Found
+        </h2>
 
-            <p class="text-purple-700 mb-8">
-                Oops! The page you’re looking for doesn’t exist or has been moved.
-            </p>
+        <p class="mt-4 text-purple-700">
+            {% if error and error.description %}
+                {{ error.description }}
+            {% else %}
+                The sweet treat you’re looking for doesn’t exist or has been sold out.
+            {% endif %}
+        </p>
 
-            <!-- Actions -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/"
-                   class="bg-purple-700 hover:bg-purple-800 text-white
-                          font-bold px-8 py-3 rounded-xl transition">
-                    Go Home
-                </a>
+        <!-- Divider -->
+        <div class="w-16 h-1 bg-purple-200 mx-auto my-6 rounded-full"></div>
 
-                <a href="/browse"
-                   class="bg-purple-100 hover:bg-purple-200 text-purple-800
-                          font-bold px-8 py-3 rounded-xl transition">
-                    Browse Products
-                </a>
-            </div>
+        <!-- Button -->
+        <a href="{{ url_for('index') }}"
+           class="inline-block bg-purple-700 hover:bg-purple-800
+                  text-white font-semibold px-8 py-3 rounded-full
+                  transition shadow-md hover:shadow-lg">
+            Back to Home
+        </a>
 
-        </div>
+        <!-- Decorative Text -->
+        <p class="mt-6 text-sm text-purple-400">
+            🍰 Doughi Sweets — baked with love
+        </p>
     </div>
 
 </body>
