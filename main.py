@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request , redirect, flash
+from flask import Flask, render_template,request , redirect, flash, abort
 from flask_login import current_user, LoginManager, login_user, login_required
 
 import pymysql
@@ -106,6 +106,9 @@ def product(product_id):
     
     connection.close()
     
+    if result is None:
+        abort(404)
+
     if reviews:
         average_rating = round(sum(review["Rating"] for review in reviews) / len(reviews), 1)
     else:
@@ -383,6 +386,6 @@ def order():
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template("404.html.jinja")
+    return render_template("404.html", error=error), 404
 
 
